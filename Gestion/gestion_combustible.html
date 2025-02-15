@@ -1,29 +1,30 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Tipos de Vehículos</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Gestión de Tipos de Combustible</title>
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
     <nav>
         <ul class="nav-menu">
+            <li><a href="../index.html">Inicio</a></li>
             <li><a href="gestion_tipos_vehiculos.html">Tipos de Vehículos</a></li>
             <li><a href="gestion_marcas.html">Marcas</a></li>
             <li><a href="gestion_modelos.html">Modelos</a></li>
-            <li><a href="gestion_combustible.html">Tipos de Combustible</a></li>
+            <li><a href="gestion_combustible.html" class="active">Tipos de Combustible</a></li>
             <li><a href="gestion_vehiculos.html">Vehículos</a></li>
             <li><a href="gestion_clientes.html">Clientes</a></li>
             <li><a href="gestion_empleados.html">Empleados</a></li>
-            <li><a href="proceso_inspeccion.html">Inspecciones</a></li>
-            <li><a href="proceso_renta_devolucion.html">Renta y Devolución</a></li>
-            <li><a href="consultas.html">Consultas</a></li>
-            <li><a href="reportes.html">Reportes</a></li>
+            <li><a href="../Proceso/proceso_inspeccion.html">Inspecciones</a></li>
+            <li><a href="../Proceso/proceso_renta_devolucion.html">Renta y Devolución</a></li>
+            <li><a href="../Reporte/consultas.html">Consultas</a></li>
+            <li><a href="../Reporte/reportes.html">Reportes</a></li>
         </ul>
     </nav>
     <div class="container">
-        <h1>Gestión de Tipos de Vehículos</h1>
+        <h1>Gestión de Tipos de Combustible</h1>
         <button class="add-button" onclick="showAddForm()">Añadir Nuevo Tipo</button>
         <table>
             <thead>
@@ -34,16 +35,32 @@
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody id="vehicleTypeTable">
-                <!-- Aquí se llenarán los tipos de vehículos -->
+            <tbody id="fuelTypeTable">
+                <tr>
+                    <td>1</td>
+                    <td>Gasolina</td>
+                    <td>Activo</td>
+                    <td>
+                        <button>Editar</button>
+                        <button>Eliminar</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Diésel</td>
+                    <td>Activo</td>
+                    <td>
+                        <button>Editar</button>
+                        <button>Eliminar</button>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
 
-    <!-- Formulario Añadir/Editar Tipo -->
     <div id="form-container" class="form-container" style="display:none;">
         <div class="form-content">
-            <h2 id="form-title">Añadir Tipo de Vehículo</h2>
+            <h2 id="form-title">Añadir Tipo de Combustible</h2>
             <label for="description">Descripción:</label>
             <input type="text" id="description" name="description">
             <label for="status">Estado:</label>
@@ -51,7 +68,7 @@
                 <option value="Activo">Activo</option>
                 <option value="Inactivo">Inactivo</option>
             </select>
-            <button onclick="saveType()">Guardar</button>
+            <button onclick="hideAddForm()">Guardar</button>
             <button onclick="hideAddForm()">Cancelar</button>
         </div>
     </div>
@@ -63,11 +80,6 @@
 
     function hideAddForm() {
         document.getElementById('form-container').style.display = 'none';
-    }
-
-    function saveType() {
-        // Función para guardar el tipo de vehículo
-        hideAddForm();
     }
 </script>
 </html>

@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav>
+        <ul class="nav-menu">
+            <li><a href="../index.html">Inicio</a></li>
+            <li><a href="../Gestion/gestion_tipos_vehiculos.html">Tipos de Vehículos</a></li>
+            <li><a href="../Gestion/gestion_marcas.html">Marcas</a></li>
+            <li><a href="../Gestion/gestion_modelos.html">Modelos</a></li>
+            <li><a href="../Gestion/gestion_combustible.html">Tipos de Combustible</a></li>
+            <li><a href="../Gestion/gestion_vehiculos.html">Vehículos</a></li>
+            <li><a href="../Gestion/gestion_clientes.html">Clientes</a></li>
+            <li><a href="../Gestion/gestion_empleados.html">Empleados</a></li>
+            <li><a href="../Proceso/proceso_inspeccion.html">Inspecciones</a></li>
+            <li><a href="../Proceso/proceso_renta_devolucion.html">Renta y Devolución</a></li>
+            <li><a href="consultas.html">Consultas</a></li>
+            <li><a href="reportes.html" class="active">Reportes</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Reportes</h1>
+        <form>
+            <label for="reportType">Tipo de Reporte:</label>
+            <select id="reportType" name="reportType">
+                <option value="rentas">Rentas entre Fechas</option>
+                <option value="tipoVehiculo">Rentas por Tipo de Vehículo</option>
+            </select>
+            <label for="startDate">Fecha Inicio:</label>
+            <input type="date" id="startDate" name="startDate">
+            <label for="endDate">Fecha Fin:</label>
+            <input type="date" id="endDate" name="endDate">
+            <button type="submit">Generar Reporte</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>No. Renta</th>
+                    <th>Cliente</th>
+                    <th>Vehículo</th>
+                    <th>Fecha Renta</th>
+                    <th>Fecha Devolución</th>
+                    <th>Monto Total</th>
+                </tr>
+            </thead>
+            <tbody id="reportTable">
+                <tr>
+                    <td>1</td>
+                    <td>Juan Pérez</td>
+                    <td>Sedán Rojo</td>
+                    <td>2023-10-01</td>
+                    <td>2023-10-05</td>
+                    <td>$200</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
