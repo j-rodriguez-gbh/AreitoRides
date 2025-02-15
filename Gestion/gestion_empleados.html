@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Empleados</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav>
+        <ul class="nav-menu">
+            <li><a href="../index.html">Inicio</a></li>
+            <li><a href="gestion_tipos_vehiculos.html">Tipos de Vehículos</a></li>
+            <li><a href="gestion_marcas.html">Marcas</a></li>
+            <li><a href="gestion_modelos.html">Modelos</a></li>
+            <li><a href="gestion_combustible.html">Tipos de Combustible</a></li>
+            <li><a href="gestion_vehiculos.html">Vehículos</a></li>
+            <li><a href="gestion_clientes.html">Clientes</a></li>
+            <li><a href="gestion_empleados.html" class="active">Empleados</a></li>
+            <li><a href="../Proceso/proceso_inspeccion.html">Inspecciones</a></li>
+            <li><a href="../Proceso/proceso_renta_devolucion.html">Renta y Devolución</a></li>
+            <li><a href="../Reporte/consultas.html">Consultas</a></li>
+            <li><a href="../Reporte/reportes.html">Reportes</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Gestión de Empleados</h1>
+        <button class="add-button" onclick="showAddForm()">Añadir Nuevo Empleado</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Cédula</th>
+                    <th>Tanda Labor</th>
+                    <th>Porciento Comisión</th>
+                    <th>Fecha Ingreso</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="employeeTable">
+                <tr>
+                    <td>1</td>
+                    <td>Carlos Gómez</td>
+                    <td>001-2345678-9</td>
+                    <td>Matutina</td>
+                    <td>5%</td>
+                    <td>2023-01-15</td>
+                    <td>Activo</td>
+                    <td>
+                        <button>Editar</button>
+                        <button>Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="form-container" class="form-container" style="display:none;">
+        <div class="form-content">
+            <h2 id="form-title">Añadir Empleado</h2>
+            <label for="name">Nombre:</label>
+            <input type="text" id="name" name="name">
+            <label for="cedula">Cédula:</label>
+            <input type="text" id="cedula" name="cedula">
+            <label for="shift">Tanda Labor:</label>
+            <select id="shift" name="shift">
+                <option value="Matutina">Matutina</option>
+                <option value="Vespertina">Vespertina</option>
+                <option value="Nocturna">Nocturna</option>
+            </select>
+            <label for="commission">Porciento Comisión:</label>
+            <input type="text" id="commission" name="commission">
+            <label for="date">Fecha Ingreso:</label>
+            <input type="date" id="date" name="date">
+            <label for="status">Estado:</label>
+            <select id="status" name="status">
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+            </select>
+            <button onclick="hideAddForm()">Guardar</button>
+            <button onclick="hideAddForm()">Cancelar</button>
+        </div>
+    </div>
+</body>
+<script>
+    function showAddForm() {
+        document.getElementById('form-container').style.display = 'block';
+    }
+
+    function hideAddForm() {
+        document.getElementById('form-container').style.display = 'none';
+    }
+</script>
+</html>

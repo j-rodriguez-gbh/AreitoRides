@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renta y Devolución</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav>
+        <ul class="nav-menu">
+            <li><a href="../index.html">Inicio</a></li>
+            <li><a href="../Gestion/gestion_tipos_vehiculos.html">Tipos de Vehículos</a></li>
+            <li><a href="../Gestion/gestion_marcas.html">Marcas</a></li>
+            <li><a href="../Gestion/gestion_modelos.html">Modelos</a></li>
+            <li><a href="../Gestion/gestion_combustible.html">Tipos de Combustible</a></li>
+            <li><a href="../Gestion/gestion_vehiculos.html">Vehículos</a></li>
+            <li><a href="../Gestion/gestion_clientes.html">Clientes</a></li>
+            <li><a href="../Gestion/gestion_empleados.html">Empleados</a></li>
+            <li><a href="proceso_inspeccion.html">Inspecciones</a></li>
+            <li><a href="proceso_renta_devolucion.html" class="active">Renta y Devolución</a></li>
+            <li><a href="../Reporte/consultas.html">Consultas</a></li>
+            <li><a href="../Reporte/reportes.html">Reportes</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Renta y Devolución</h1>
+        <button class="add-button" onclick="showAddForm()">Añadir Nueva Renta</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>No. Renta</th>
+                    <th>Empleado</th>
+                    <th>Vehículo</th>
+                    <th>Cliente</th>
+                    <th>Fecha Renta</th>
+                    <th>Fecha Devolución</th>
+                    <th>Monto x Día</th>
+                    <th>Cantidad de Días</th>
+                    <th>Comentario</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="rentTable">
+                <tr>
+                    <td>1</td>
+                    <td>Carlos Gómez</td>
+                    <td>Sedán Rojo</td>
+                    <td>Juan Pérez</td>
+                    <td>2023-10-01</td>
+                    <td>2023-10-05</td>
+                    <td>$50</td>
+                    <td>4</td>
+                    <td>Sin comentarios</td>
+                    <td>Activo</td>
+                    <td>
+                        <button>Editar</button>
+                        <button>Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="form-container" class="form-container" style="display:none;">
+        <div class="form-content">
+            <h2 id="form-title">Añadir Renta</h2>
+            <label for="employee">Empleado:</label>
+            <select id="employee" name="employee">
+                <option value="1">Carlos Gómez</option>
+                <option value="2">Ana Martínez</option>
+            </select>
+            <label for="vehicle">Vehículo:</label>
+            <select id="vehicle" name="vehicle">
+                <option value="1">Sedán Rojo</option>
+                <option value="2">SUV Azul</option>
+            </select>
+            <label for="client">Cliente:</label>
+            <select id="client" name="client">
+                <option value="1">Juan Pérez</option>
+                <option value="2">María López</option>
+            </select>
+            <label for="rentDate">Fecha Renta:</label>
+            <input type="date" id="rentDate" name="rentDate">
+            <label for="returnDate">Fecha Devolución:</label>
+            <input type="date" id="returnDate" name="returnDate">
+            <label for="amount">Monto x Día:</label>
+            <input type="text" id="amount" name="amount">
+            <label for="days">Cantidad de Días:</label>
+            <input type="number" id="days" name="days">
+            <label for="comment">Comentario:</label>
+            <textarea id="comment" name="comment"></textarea>
+            <label for="status">Estado:</label>
+            <select id="status" name="status">
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+            </select>
+            <button onclick="hideAddForm()">Guardar</button>
+            <button onclick="hideAddForm()">Cancelar</button>
+        </div>
+    </div>
+</body>
+<script>
+    function showAddForm() {
+        document.getElementById('form-container').style.display = 'block';
+    }
+
+    function hideAddForm() {
+        document.getElementById('form-container').style.display = 'none';
+    }
+</script>
+</html>
