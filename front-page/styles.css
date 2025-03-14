@@ -1,0 +1,91 @@
+body {
+    background: none;
+}
+
+.hero {
+    position: relative;
+    background: url('Media/Fondos/Fondo.jpg') no-repeat center center;
+    background-size: cover;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+    .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .hero div {
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero h1 {
+        font-size: 3.5rem;
+        font-weight: bold;
+    }
+
+    .hero p {
+        font-size: 1.5rem;
+    }
+
+.card {
+    position: relative;
+    overflow: hidden; /* Evita que la info sobresalga */
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: none;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+/* Contenedor para la imagen */
+.image-container {
+    position: relative;
+}
+
+/* Información sobre la imagen que aparece en hover */
+.info-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Fondo oscuro */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0; /* Ocultamos la información por defecto */
+    transition: opacity 0.3s ease-in-out; /* Efecto suave */
+    text-align: center;
+}
+
+.card:hover .info-overlay {
+    opacity: 1; /* Muestra la información al hacer hover */
+}
+
+.card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+footer {
+    background: #343a40;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 50px;
+}

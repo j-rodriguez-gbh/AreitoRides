@@ -3,62 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reportes</title>
+    <title>Reportes | Areito Rides</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="../styles.css">
+    <!-- Auth Script -->
+    <script src="../front-page/auth.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            min-height: 100vh;
+            background-color: #343a40;
+            padding-top: 20px;
+        }
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 5px;
+            border-radius: 4px;
+            padding: 10px 15px;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .sidebar .nav-link i {
+            margin-right: 10px;
+        }
+        .main-content {
+            padding: 20px;
+        }
+        .title-bar {
+            background-color: white;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card {
+            margin-bottom: 20px;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .logout-section {
+            padding: 0 15px;
+            margin-top: 20px;
+        }
+        .logout-btn {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 4px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+        }
+        .logout-btn:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .logout-btn i {
+            margin-right: 10px;
+        }
+        .search-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        .action-button {
+            font-size: 0.875rem;
+            padding: 0.375rem 0.75rem;
+        }
+        .action-button i {
+            margin-right: 5px;
+            font-size: 0.875rem;
+        }
+    </style>
 </head>
 <body>
-    <nav>
-        <ul class="nav-menu">
-            <li><a href="../index.html">Inicio</a></li>
-            <li><a href="../Gestion/gestion_tipos_vehiculos.html">Tipos de Vehículos</a></li>
-            <li><a href="../Gestion/gestion_marcas.html">Marcas</a></li>
-            <li><a href="../Gestion/gestion_modelos.html">Modelos</a></li>
-            <li><a href="../Gestion/gestion_combustible.html">Tipos de Combustible</a></li>
-            <li><a href="../Gestion/gestion_vehiculos.html">Vehículos</a></li>
-            <li><a href="../Gestion/gestion_clientes.html">Clientes</a></li>
-            <li><a href="../Gestion/gestion_empleados.html">Empleados</a></li>
-            <li><a href="../Proceso/proceso_inspeccion.html">Inspecciones</a></li>
-            <li><a href="../Proceso/proceso_renta_devolucion.html">Renta y Devolución</a></li>
-            <li><a href="consultas.html">Consultas</a></li>
-            <li><a href="reportes.html" class="active">Reportes</a></li>
-        </ul>
-    </nav>
-    <div class="container">
-        <h1>Reportes</h1>
-        <form>
-            <label for="reportType">Tipo de Reporte:</label>
-            <select id="reportType" name="reportType">
-                <option value="rentas">Rentas entre Fechas</option>
-                <option value="tipoVehiculo">Rentas por Tipo de Vehículo</option>
-            </select>
-            <label for="startDate">Fecha Inicio:</label>
-            <input type="date" id="startDate" name="startDate">
-            <label for="endDate">Fecha Fin:</label>
-            <input type="date" id="endDate" name="endDate">
-            <button type="submit">Generar Reporte</button>
-        </form>
-        <table>
-            <thead>
-                <tr>
-                    <th>No. Renta</th>
-                    <th>Cliente</th>
-                    <th>Vehículo</th>
-                    <th>Fecha Renta</th>
-                    <th>Fecha Devolución</th>
-                    <th>Monto Total</th>
-                </tr>
-            </thead>
-            <tbody id="reportTable">
-                <tr>
-                    <td>1</td>
-                    <td>Juan Pérez</td>
-                    <td>Sedán Rojo</td>
-                    <td>2023-10-01</td>
-                    <td>2023-10-05</td>
-                    <td>$200</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <h5 class="text-white text-center mb-4">Areito Rides</h5>
+                <nav class="nav-menu">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html">
+                                <i class="fas fa-home"></i> Inicio
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../Gestion/gestion_tipos_vehiculos.html">
+                                <i class="fas fa-car-side"></i> Tipos de Vehículos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../Gestion/gestion_marcas.html">
+                                <i class="fas fa-tag"></i> Marcas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../Gestion/gestion_modelos.html">
+                                <i class="fas fa-car"></i> Modelos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../Gestion/gestion_combustible.html">
+                                <i class="fas fa-gas-pump"></i> Tipos de Combustible
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../Gestion/gestion_vehiculos.html">
+                                <i class="fas fa-car-alt"></i> Vehículos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../Gestion/gestion_clientes.html">
+                                <i class="fas fa-users"></i> Clientes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../Gestion/gestion_empleados.html">
+                                <i class="fas fa-user-tie"></i> Empleados
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../Proceso/proceso_inspeccion.html">
+                                <i class="fas fa-clipboard-check"></i> Inspecciones
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../Proceso/proceso_renta_devolucion.html">
+                                <i class="fas fa-exchange-alt"></i> Renta y Devolución
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="consultas.html">
+                                <i class="fas fa-search"></i> Consultas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="reportes.html">
+                                <i class="fas fa-chart-bar"></i> Reportes
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="logout-section">
+                    <a href="#" class="logout-btn" id="logoutButton">
+                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+                <div class="title-bar">
+                    <h2 class="mb-0">Reportes</h2>
+                </div>
+
+                <div class="search-form">
+                    <form class="row g-3">
+                        <div class="col-md-4">
+                            <label for="reportType" class="form-label">Tipo de Reporte</label>
+                            <select id="reportType" name="reportType" class="form-select">
+                                <option value="rentas">Rentas entre Fechas</option>
+                                <option value="tipoVehiculo">Rentas por Tipo de Vehículo</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="startDate" class="form-label">Fecha Inicio</label>
+                            <input type="date" class="form-control" id="startDate" name="startDate">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="endDate" class="form-label">Fecha Fin</label>
+                            <input type="date" class="form-control" id="endDate" name="endDate">
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100 action-button">
+                                <i class="fas fa-file-export"></i> Generar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>No. Renta</th>
+                                        <th>Cliente</th>
+                                        <th>Vehículo</th>
+                                        <th>Fecha Renta</th>
+                                        <th>Fecha Devolución</th>
+                                        <th>Monto Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reportTable">
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Juan Pérez</td>
+                                        <td>Sedán Rojo</td>
+                                        <td>2023-10-01</td>
+                                        <td>2023-10-05</td>
+                                        <td>$200</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Event listener for the logout button
+        document.getElementById('logoutButton').addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
+        });
+    </script>
 </body>
 </html>

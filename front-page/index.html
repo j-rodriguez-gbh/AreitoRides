@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Areito Rides - Alquiler de Vehículos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">Areito Rides</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="#vehiculos">Catálogo</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
+                        <li class="nav-item" id="adminButtonContainer" style="display: none;">
+                            <a class="btn btn-primary ms-2" href="../Gestion/gestion_marcas.html">
+                                <i class="fas fa-cog"></i> Admin
+                            </a>
+                        </li>
+                        <li class="nav-item" id="logoutButtonContainer" style="display: none;">
+                            <button class="btn btn-outline-danger ms-2" id="logoutButton">Cerrar Sesión</button>
+                        </li>
+                        <li class="nav-item" id="loginButtonContainer">
+                            <button class="btn btn-outline-light ms-2" data-bs-toggle="modal" data-bs-target="#loginModal">Iniciar Sesión</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Iniciar Sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Usuario</label>
+                            <input type="text" class="form-control" id="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <div id="loginError" class="alert alert-danger d-none"></div>
+                        <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div>
+            <h1>Encuentra el Auto Perfecto</h1>
+            <p>Reserva fácilmente y disfruta tu viaje.</p>
+        </div>
+    </section>
+
+    <section id="vehiculos" class="container py-5">
+        <h2 class="text-center mb-4">Catálogo de Vehículos</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="image-container">
+                        <img src="Media/Marcas/Toyota/ToyotaCorolla3.png" class="card-img-top" alt="Auto 1">
+                        <div class="info-overlay">
+                            <p>Motor 1.8L | Automático | 5 pasajeros</p>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Toyota Corolla</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="image-container">
+                        <img src="Media/Marcas/Honda/HondaCivic4.jpg" class="card-img-top" alt="Auto 2">
+
+                        <div class="info-overlay">
+                            <p>Motor 2.0L | Manual | 5 pasajeros</p>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Honda Civic</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="image-container">
+                        <img src="Media/Marcas/Nissan/NissanX-Trail3.png" class="card-img-top" alt="Auto 3">
+
+                        <div class="info-overlay">
+                            <p>Motor 2.5L | Automático | 7 pasajeros</p>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Nissan X-Trail</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="container text-center py-5">
+        <h2>Contacto</h2>
+        <p>Email: contacto@areitorides.com</p>
+        <p>Teléfono: +1 809 555 5555</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Areito Rides - Todos los derechos reservados</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Check if user is logged in when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+        });
+
+        // Function to check login status and update UI
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
+            if (isLoggedIn) {
+                // Show admin and logout buttons, hide login button
+                document.getElementById('adminButtonContainer').style.display = 'block';
+                document.getElementById('logoutButtonContainer').style.display = 'block';
+                document.getElementById('loginButtonContainer').style.display = 'none';
+            } else {
+                // Hide admin and logout buttons, show login button
+                document.getElementById('adminButtonContainer').style.display = 'none';
+                document.getElementById('logoutButtonContainer').style.display = 'none';
+                document.getElementById('loginButtonContainer').style.display = 'block';
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            checkLoginStatus();
+        }
+
+        // Add event listener to logout button
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            logout();
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('loginError');
+            
+            // Simple authentication with dummy data
+            if (username === 'admin' && password === 'admin') {
+                // Store login status in localStorage
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                // Close the modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                modal.hide();
+                
+                // Update UI
+                checkLoginStatus();
+            } else {
+                // Show error message
+                errorElement.textContent = 'Usuario o contraseña incorrectos';
+                errorElement.classList.remove('d-none');
+            }
+        });
+    </script>
+</body>
+</html>
