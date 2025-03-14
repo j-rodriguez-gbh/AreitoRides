@@ -25,9 +25,8 @@ CREATE TABLE IF NOT EXISTS `areitoDB`.`Marcas` (
   `descripcion` VARCHAR(255) NOT NULL,
   `estado` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_Marcas_UNIQUE` (`id` ASC) VISIBLE)
-ENGINE = InnoDB;
-
+  UNIQUE INDEX `id_Marcas_UNIQUE` (`id` ASC)
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `areitoDB`.`Modelos`
@@ -38,15 +37,14 @@ CREATE TABLE IF NOT EXISTS `areitoDB`.`Modelos` (
   `estado` VARCHAR(45) NOT NULL,
   `id_marca` INT NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_Modelos_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `id_marca_idx` (`id_marca` ASC) VISIBLE,
-  CONSTRAINT `id_marca`
+  UNIQUE INDEX `id_Modelos_UNIQUE` (`id` ASC),
+  INDEX `id_marca_idx` (`id_marca` ASC),
+  CONSTRAINT `id_marca_fk`
     FOREIGN KEY (`id_marca`)
     REFERENCES `areitoDB`.`Marcas` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `areitoDB`.`TipoVehiculo`
@@ -56,9 +54,8 @@ CREATE TABLE IF NOT EXISTS `areitoDB`.`TipoVehiculo` (
   `descripcion` VARCHAR(255) NOT NULL,
   `estado` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_TipoVehiculo_UNIQUE` (`id` ASC) VISIBLE)
-ENGINE = InnoDB;
-
+  UNIQUE INDEX `id_TipoVehiculo_UNIQUE` (`id` ASC)
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `areitoDB`.`TiposCombustible`
@@ -68,9 +65,8 @@ CREATE TABLE IF NOT EXISTS `areitoDB`.`TiposCombustible` (
   `descripcion` VARCHAR(255) NOT NULL,
   `estado` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_TiposCombustible_UNIQUE` (`id` ASC) VISIBLE)
-ENGINE = InnoDB;
-
+  UNIQUE INDEX `id_TiposCombustible_UNIQUE` (`id` ASC)
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `areitoDB`.`Vehiculos`
@@ -87,36 +83,35 @@ CREATE TABLE IF NOT EXISTS `areitoDB`.`Vehiculos` (
   `id_tipo_combustible` INT NOT NULL,
   `estado` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `idVehiculos_UNIQUE` (`id` ASC) VISIBLE,
-  UNIQUE INDEX `no_chasis_UNIQUE` (`no_chasis` ASC) VISIBLE,
-  UNIQUE INDEX `no_motor_UNIQUE` (`no_motor` ASC) VISIBLE,
-  UNIQUE INDEX `no_placa_UNIQUE` (`no_placa` ASC) VISIBLE,
-  INDEX `id_TipoVehiculo_idx` (`id_tipoVehiculo` ASC) VISIBLE,
-  INDEX `id_Modelo_idx` (`id_modelo` ASC) VISIBLE,
-  INDEX `id_TipoCombustible_idx` (`id_tipo_combustible` ASC) VISIBLE,
-  INDEX `id_marca_idx` (`id_marca` ASC) VISIBLE,
-  CONSTRAINT `id_marca`
+  UNIQUE INDEX `idVehiculos_UNIQUE` (`id` ASC),
+  UNIQUE INDEX `no_chasis_UNIQUE` (`no_chasis` ASC),
+  UNIQUE INDEX `no_motor_UNIQUE` (`no_motor` ASC),
+  UNIQUE INDEX `no_placa_UNIQUE` (`no_placa` ASC),
+  INDEX `id_TipoVehiculo_idx` (`id_tipoVehiculo` ASC),
+  INDEX `id_Modelo_idx` (`id_modelo` ASC),
+  INDEX `id_TipoCombustible_idx` (`id_tipo_combustible` ASC),
+  INDEX `id_marca_idx` (`id_marca` ASC),
+  CONSTRAINT `id_marca_fk`
     FOREIGN KEY (`id_marca`)
-    REFERENCES `areitoDB`.`Modelos` (`id_marca`)
+    REFERENCES `areitoDB`.`Marcas` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `id_tipo_vehiculo`
+  CONSTRAINT `id_tipo_vehiculo_fk`
     FOREIGN KEY (`id_tipoVehiculo`)
     REFERENCES `areitoDB`.`TipoVehiculo` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `id_modelo`
+  CONSTRAINT `id_modelo_fk`
     FOREIGN KEY (`id_modelo`)
     REFERENCES `areitoDB`.`Modelos` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `id_tipo_combustible`
+  CONSTRAINT `id_tipo_combustible_fk`
     FOREIGN KEY (`id_tipo_combustible`)
     REFERENCES `areitoDB`.`TiposCombustible` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `areitoDB`.`Clientes`
@@ -130,10 +125,9 @@ CREATE TABLE IF NOT EXISTS `areitoDB`.`Clientes` (
   `tipo_persona` VARCHAR(45) NOT NULL,
   `estado` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_Clientes_UNIQUE` (`id` ASC) VISIBLE,
-  UNIQUE INDEX `cedula_UNIQUE` (`cedula` ASC) VISIBLE)
-ENGINE = InnoDB;
-
+  UNIQUE INDEX `id_Clientes_UNIQUE` (`id` ASC),
+  UNIQUE INDEX `cedula_UNIQUE` (`cedula` ASC)
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `areitoDB`.`Empleados`
@@ -147,10 +141,9 @@ CREATE TABLE IF NOT EXISTS `areitoDB`.`Empleados` (
   `fecha_ingreso` DATE NOT NULL,
   `estado` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_Empleados_UNIQUE` (`id` ASC) VISIBLE,
-  UNIQUE INDEX `cedula_UNIQUE` (`cedula` ASC) VISIBLE)
-ENGINE = InnoDB;
-
+  UNIQUE INDEX `id_Empleados_UNIQUE` (`id` ASC),
+  UNIQUE INDEX `cedula_UNIQUE` (`cedula` ASC)
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `areitoDB`.`Inspecciones`
@@ -169,27 +162,26 @@ CREATE TABLE IF NOT EXISTS `areitoDB`.`Inspecciones` (
   `id_empleado` INT NOT NULL,
   `estado` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_Inspecciones_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `id_Vehiculos_idx` (`id_vehiculos` ASC) VISIBLE,
-  INDEX `id_Clientes_idx` (`id_clientes` ASC) VISIBLE,
-  INDEX `id_Empleados_idx` (`id_empleado` ASC) VISIBLE,
-  CONSTRAINT `id_vehiculo`
+  UNIQUE INDEX `id_Inspecciones_UNIQUE` (`id` ASC),
+  INDEX `id_Vehiculos_idx` (`id_vehiculos` ASC),
+  INDEX `id_Clientes_idx` (`id_clientes` ASC),
+  INDEX `id_Empleados_idx` (`id_empleado` ASC),
+  CONSTRAINT `id_vehiculo_fk`
     FOREIGN KEY (`id_vehiculos`)
     REFERENCES `areitoDB`.`Vehiculos` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `id_cliente`
+  CONSTRAINT `id_cliente_fk`
     FOREIGN KEY (`id_clientes`)
     REFERENCES `areitoDB`.`Clientes` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `id_empleado`
+  CONSTRAINT `id_empleado_fk`
     FOREIGN KEY (`id_empleado`)
     REFERENCES `areitoDB`.`Empleados` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `areitoDB`.`RentaDevolucion`
@@ -206,27 +198,26 @@ CREATE TABLE IF NOT EXISTS `areitoDB`.`RentaDevolucion` (
   `comentario` TEXT NULL,
   `estado` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_Renta_UNIQUE` (`id` ASC) VISIBLE,
-  INDEX `id_Empleados_idx` (`id_empleados` ASC) VISIBLE,
-  INDEX `id_Vehiculos_idx` (`id_vehiculo` ASC) VISIBLE,
-  INDEX `id_Clientes_idx` (`id_cliente` ASC) VISIBLE,
-  CONSTRAINT `id_empleado`
+  UNIQUE INDEX `id_Renta_UNIQUE` (`id` ASC),
+  INDEX `id_Empleados_idx` (`id_empleados` ASC),
+  INDEX `id_Vehiculos_idx` (`id_vehiculo` ASC),
+  INDEX `id_Clientes_idx` (`id_cliente` ASC),
+  CONSTRAINT `id_empleado_renta_fk`
     FOREIGN KEY (`id_empleados`)
     REFERENCES `areitoDB`.`Empleados` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `id_vehiculo`
+  CONSTRAINT `id_vehiculo_renta_fk`
     FOREIGN KEY (`id_vehiculo`)
     REFERENCES `areitoDB`.`Vehiculos` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `id_cliente`
+  CONSTRAINT `id_cliente_renta_fk`
     FOREIGN KEY (`id_cliente`)
     REFERENCES `areitoDB`.`Clientes` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
