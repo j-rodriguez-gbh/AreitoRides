@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Vehículos - AreitoRides</title>
+    <link rel="icon" type="image/x-icon" href="/assets/img/Logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="/views/front/css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/assets/img/Logo.png" alt="AreitoRides Logo" height="30">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/catalogo">Catálogo</a>
+                    </li>
+                </ul>
+                <div class="d-flex" id="authButtons">
+                    <!-- Este div se actualizará dinámicamente con updateAuthUI() -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Template para el menú de usuario (se usará en JavaScript) -->
+    <template id="userMenuTemplate">
+        <div class="dropdown">
+            <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="fas fa-user"></i> <span class="username"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="/perfil">
+                    <i class="fas fa-user-circle"></i> Mi Perfil
+                </a></li>
+                <li class="admin-link" style="display: none;"><a class="dropdown-item" href="/admin">
+                    <i class="fas fa-tools"></i> Panel de Administración
+                </a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </a></li>
+            </ul>
+        </div>
+    </template>
+
+    <!-- Template para botones de autenticación -->
+    <template id="authButtonsTemplate">
+        <button class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+        </button>
+        <a href="/registro" class="btn btn-primary">
+            <i class="fas fa-user-plus"></i> Registrarse
+        </a>
+    </template>
+
+    <!-- Sección de búsqueda -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Filtrar Vehículos</h5>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <select class="form-select" id="tipoVehiculo">
+                                    <option value="">Todos los tipos</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-select" id="marca">
+                                    <option value="">Todas las marcas</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-select" id="precio">
+                                    <option value="">Todos los precios</option>
+                                    <option value="0-50">$0 - $50</option>
+                                    <option value="51-100">$51 - $100</option>
+                                    <option value="101-200">$101 - $200</option>
+                                    <option value="201+">$201+</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de vehículos -->
+    <div class="container mt-4">
+        <div class="row" id="vehiclesContainer">
+            <!-- Los vehículos se cargarán dinámicamente aquí -->
+        </div>
+    </div>
+
+    <!-- Modal de detalles del vehículo -->
+    <div class="modal fade" id="vehicleModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="vehicleTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div id="vehicleDetails">
+                    <!-- El contenido se generará dinámicamente -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button class="btn btn-primary" onclick="rentVehicle(selectedVehicle.id)">
+                        <i class="fas fa-car"></i> Alquilar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de inicio de sesión -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Iniciar Sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginUsername" class="form-label">Usuario</label>
+                            <input type="text" class="form-control" id="loginUsername" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>¿No tienes una cuenta? <a href="/registro">Regístrate aquí</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light mt-5">
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>AreitoRides</h5>
+                    <p>Tu mejor opción para alquilar vehículos de manera rápida y segura.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Enlaces Rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-light">Inicio</a></li>
+                        <li><a href="/catalogo" class="text-light">Catálogo</a></li>
+                        <li><a href="/contacto" class="text-light">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                        <li><i class="fas fa-envelope"></i> info@areitorides.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Santo Domingo, República Dominicana</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contenedor de alertas -->
+    <div id="alertContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1050"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js" type="module"></script>
+    <script src="js/catalogo.js" type="module"></script>
+</body>
+</html> 

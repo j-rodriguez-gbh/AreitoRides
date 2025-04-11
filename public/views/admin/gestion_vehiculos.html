@@ -1,0 +1,1303 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Vehículos - Areito Rides</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/assets/css/admin.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-admin">
+        <div class="container">
+            <a class="navbar-brand" href="/admin">
+                <img src="/assets/img/Logo.png" alt="Areito Rides" height="40">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">
+                            <i class="fas fa-chart-line me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/admin/vehiculos">
+                            <i class="fas fa-car me-2"></i>Vehículos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/marcas">
+                            <i class="fas fa-trademark me-2"></i>Marcas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/modelos">
+                            <i class="fas fa-car-side me-2"></i>Modelos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/tipos-vehiculos">
+                            <i class="fas fa-tags me-2"></i>Tipos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/combustible">
+                            <i class="fas fa-gas-pump me-2"></i>Combustible
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/empleados">
+                            <i class="fas fa-users me-2"></i>Empleados
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/clientes">
+                            <i class="fas fa-user-friends me-2"></i>Clientes
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="/" class="btn btn-outline-light me-2">
+                        <i class="fas fa-home me-2"></i>Ir al Inicio
+                    </a>
+                    <button id="logoutButton" class="btn btn-logout">
+                        <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="page-title mb-0">Gestión de Vehículos</h1>
+            <button class="btn btn-add btn-action" id="addVehicleBtn" data-bs-toggle="modal" data-bs-target="#addVehicleModal">
+                <i class="fas fa-plus me-2"></i>Nuevo Vehículo
+            </button>
+        </div>
+
+        <!-- Búsqueda y Filtros -->
+        <div class="search-container">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <input type="text" class="form-control search-input" placeholder="Buscar por modelo o placa...">
+                </div>
+                <div class="col-md-2">
+                    <select class="form-select" id="marcaFilter">
+                        <option value="">Marca</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-select" id="modeloFilter">
+                        <option value="">Modelo</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-select" id="tipoFilter">
+                        <option value="">Tipo</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-select" id="estadoFilter">
+                        <option value="">Estado</option>
+                        <option value="disponible">Disponible</option>
+                        <option value="rentado">Rentado</option>
+                        <option value="mantenimiento">Mantenimiento</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <button class="btn btn-primary w-100">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de Vehículos -->
+        <div class="table-container">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Año</th>
+                            <th>Tipo</th>
+                            <th>Combustible</th>
+                            <th>No. Chasis</th>
+                            <th>No. Motor</th>
+                            <th>No. Placa</th>
+                            <th>Estado</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vehicleTable">
+                        <tr>
+                            <td>1</td>
+                            <td>Toyota</td>
+                            <td>Corolla</td>
+                            <td>2023</td>
+                            <td>Sedán</td>
+                            <td>Gasolina</td>
+                            <td>1HGCM82633A123456</td>
+                            <td>K20Z2-1234567</td>
+                            <td>ABC-123</td>
+                            <td><span class="badge bg-success">Disponible</span></td>
+                            <td class="text-end">
+                                <button class="btn btn-edit btn-action btn-sm" data-bs-toggle="modal" data-bs-target="#editVehicleModal">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-delete btn-action btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div class="text-muted">
+                    Mostrando 1-10 de 50 resultados
+                </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination mb-0">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Añadir Vehículo -->
+    <div class="modal fade" id="addVehicleModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-car-side me-2"></i>
+                        Añadir Vehículo
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addVehicleForm" class="form-container p-0">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Marca</label>
+                                <select id="marcaSelect" class="form-select" required>
+                                    <option value="">Seleccionar marca</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Modelo</label>
+                                <select id="modeloSelect" class="form-select" required>
+                                    <option value="">Seleccionar modelo</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Año</label>
+                                <input id="anioInput" type="number" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Tipo</label>
+                                <select id="tipoSelect" class="form-select" required>
+                                    <option value="">Seleccionar tipo</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Combustible</label>
+                                <select id="combustibleSelect" class="form-select" required>
+                                    <option value="">Seleccionar combustible</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">No. Chasis</label>
+                                <input id="chasisInput" type="text" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">No. Motor</label>
+                                <input id="motorInput" type="text" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">No. Placa</label>
+                                <input id="placaInput" type="text" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Estado</label>
+                                <select id="estadoSelect" class="form-select" required>
+                                    <option value="disponible" selected>Disponible</option>
+                                    <option value="rentado">Rentado</option>
+                                    <option value="mantenimiento">Mantenimiento</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Tarifa por Día (RD$)</label>
+                                <input id="precioInput" type="number" class="form-control" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button id="saveAddVehicleBtn" type="button" class="btn btn-add">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Vehículo -->
+    <div class="modal fade" id="editVehicleModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-car-side me-2"></i>
+                        Editar Vehículo
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editVehicleForm" class="form-container p-0">
+                        <input type="hidden" id="editVehiculoId">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Marca</label>
+                                <select id="editMarcaSelect" class="form-select" required>
+                                    <option value="">Seleccionar marca</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Modelo</label>
+                                <select id="editModeloSelect" class="form-select" required>
+                                    <option value="">Seleccionar modelo</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Año</label>
+                                <input id="editAnioInput" type="number" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Tipo</label>
+                                <select id="editTipoSelect" class="form-select" required>
+                                    <option value="">Seleccionar tipo</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Combustible</label>
+                                <select id="editCombustibleSelect" class="form-select" required>
+                                    <option value="">Seleccionar combustible</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">No. Chasis</label>
+                                <input id="editChasisInput" type="text" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">No. Motor</label>
+                                <input id="editMotorInput" type="text" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">No. Placa</label>
+                                <input id="editPlacaInput" type="text" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Estado</label>
+                                <select id="editEstadoSelect" class="form-select" required>
+                                    <option value="disponible">Disponible</option>
+                                    <option value="rentado">Rentado</option>
+                                    <option value="mantenimiento">Mantenimiento</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Tarifa por Día (RD$)</label>
+                                <input id="editPrecioInput" type="number" class="form-control" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button id="saveEditVehicleBtn" type="button" class="btn btn-edit">Actualizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/views/front/js/api.js" type="module"></script>
+    <script src="/assets/js/auth.js" type="module"></script>
+    <script>
+        // Configuración de la API
+        const API_BASE_URL = 'http://localhost:5001/api';
+        
+        // Función para obtener el token de autorización
+        const getAuthToken = () => {
+            let token = localStorage.getItem('token');
+            if (!token) {
+                // Si no hay token en localStorage, intentar obtener del usuario
+                const user = localStorage.getItem('user');
+                if (user) {
+                    try {
+                        const userData = JSON.parse(user);
+                        token = userData.token;
+                    } catch (e) {
+                        console.error('Error al parsear datos de usuario:', e);
+                    }
+                }
+            }
+            return token;
+        };
+        
+        // Función centralizada para hacer peticiones a la API
+        const fetchFromApi = async (endpoint, options = {}) => {
+            const token = getAuthToken();
+            const headers = {
+                'Content-Type': 'application/json',
+                ...options.headers
+            };
+            
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            
+            try {
+                console.log(`Haciendo fetch a: ${API_BASE_URL}${endpoint}`);
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+                    ...options,
+                    headers,
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        console.warn('Sesión expirada, redirigiendo a login...');
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                        window.location.href = '/login';
+                        throw new Error('Sesión expirada');
+                    }
+                    
+                    // Intentar obtener el mensaje de error del servidor si está disponible
+                    let errorMessage = `Error en la solicitud: ${response.status}`;
+                    try {
+                        const errorData = await response.json();
+                        if (errorData && errorData.message) {
+                            errorMessage = errorData.message;
+                        }
+                    } catch (e) {
+                        // Si no podemos obtener el mensaje de error, usamos el predeterminado
+                    }
+                    
+                    console.warn(`Error en endpoint ${endpoint}:`, errorMessage);
+                    throw new Error(errorMessage);
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error(`Error en fetchFromApi (${endpoint}):`, error);
+                // Agregar información sobre el endpoint al error para mejor diagnóstico
+                const enhancedError = new Error(`${error.message} (endpoint: ${endpoint})`);
+                enhancedError.originalError = error;
+                enhancedError.endpoint = endpoint;
+                throw enhancedError;
+            }
+        };
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Verificar autenticación
+            if (!window.api || !window.api.auth) {
+                window.location.href = '/login';
+                return;
+            }
+
+            // Verificar conexión al servidor
+            let serverAccessible = false;
+            try {
+                // Intentar acceder a un endpoint simple para verificar que el servidor está respondiendo
+                await window.api.tiposCombustible.getAll();
+                serverAccessible = true;
+                console.log('Servidor accesible');
+            } catch (error) {
+                console.error('Error al comprobar acceso al servidor:', error);
+                serverAccessible = false;
+                console.log('Servidor no accesible, se usarán datos de ejemplo');
+            }
+
+            // Función para manejar errores
+            window.handleError = function(error, context) {
+                console.error(`Error en ${context}:`, error);
+                // Usar toasts de Bootstrap para mostrar errores (más amigable que alert)
+                const toastContainer = document.createElement('div');
+                toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+                toastContainer.innerHTML = `
+                    <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                <strong>Error en ${context}:</strong> ${error.message || 'Error desconocido'}
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(toastContainer);
+                const toast = new bootstrap.Toast(toastContainer.querySelector('.toast'), { delay: 5000 });
+                toast.show();
+                
+                // Eliminar el toast del DOM después de ocultarse
+                toastContainer.querySelector('.toast').addEventListener('hidden.bs.toast', () => {
+                    toastContainer.remove();
+                });
+            };
+
+            // Variables globales
+            let vehiculos = [];
+            let marcas = [];
+            let modelos = [];
+            let tiposVehiculo = [];
+            let tiposCombustible = [];
+            let currentPage = 1;
+            let totalPages = 1;
+            const itemsPerPage = 10;
+
+            // Referencias a elementos del DOM
+            const searchInput = document.querySelector('.search-input');
+            const marcaFilter = document.getElementById('marcaFilter');
+            const modeloFilter = document.getElementById('modeloFilter');
+            const tipoFilter = document.getElementById('tipoFilter');
+            const estadoFilter = document.getElementById('estadoFilter');
+            const searchButton = document.querySelector('.btn-primary');
+            const vehicleTable = document.getElementById('vehicleTable');
+            const paginationContainer = document.querySelector('.pagination');
+            const resultsInfo = document.querySelector('.text-muted');
+
+            // Cargar datos de vehículos
+            const loadVehicles = async (page = 1) => {
+                try {
+                    console.log('Intentando cargar vehículos...');
+                    currentPage = page;
+                    
+                    try {
+                        // Cargar vehículos a través del API mejorado que incluye los nombres pre-resueltos
+                        vehiculos = await window.api.vehiculos.getAll();
+                        console.log('Vehículos cargados correctamente:', vehiculos);
+                        
+                        // Verificar la estructura para debugging
+                        if (vehiculos && vehiculos.length > 0) {
+                            const firstVehicle = vehiculos[0];
+                            console.log('Estructura del primer vehículo:');
+                            Object.keys(firstVehicle).forEach(key => {
+                                console.log(`${key}: ${firstVehicle[key]} (${typeof firstVehicle[key]})`);
+                            });
+                            
+                            // Verificar que tenemos los campos necesarios
+                            const requiredFields = ['id', 'marca_nombre', 'modelo_nombre', 'tipo_nombre', 'combustible_nombre'];
+                            const missingFields = requiredFields.filter(field => !firstVehicle.hasOwnProperty(field));
+                            
+                            if (missingFields.length > 0) {
+                                console.warn(`Campos faltantes en vehículo: ${missingFields.join(', ')}`);
+                            }
+                        }
+                        
+                        // Cargar datos relacionados para los filtros
+                        await Promise.all([
+                            loadMarcas(),
+                            loadModelos(),
+                            loadTiposVehiculo(),
+                            loadTiposCombustible()
+                        ]);
+                        
+                        // Actualizar tabla
+                        updateTable();
+                    } catch (error) {
+                        console.error('Error al obtener vehículos:', error);
+                        showErrorMessage('No se pudieron cargar los vehículos: ' + error.message);
+                        
+                        // Intentar usar datos de ejemplo como último recurso
+                        useExampleData();
+                    }
+                } catch (error) {
+                    console.error('Error general en loadVehicles:', error);
+                    handleError(error, 'carga de vehículos');
+                    useExampleData();
+                }
+            };
+            
+            // Mostrar mensaje de error
+            const showErrorMessage = (message) => {
+                const toastContainer = document.createElement('div');
+                toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+                toastContainer.innerHTML = `
+                    <div class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                ${message}
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(toastContainer);
+                const toast = new bootstrap.Toast(toastContainer.querySelector('.toast'), { delay: 5000 });
+                toast.show();
+                
+                // Eliminar el toast del DOM después de ocultarse
+                toastContainer.querySelector('.toast').addEventListener('hidden.bs.toast', () => {
+                    toastContainer.remove();
+                });
+            };
+
+            // Función para usar datos de ejemplo
+            const useExampleData = () => {
+                // Datos de ejemplo para vehículos
+                vehiculos = [
+                    { 
+                        id: 1,
+                        id_marca: 1,
+                        id_modelo: 1,
+                        id_tipoVehiculo: 1,
+                        id_tipo_combustible: 1,
+                        anio: 2023,
+                        no_chasis: '1HGCM82633A123456',
+                        no_motor: 'K20Z2-1234567',
+                        no_placa: 'ABC-123',
+                        estado: 'disponible',
+                        precio_dia: 3500
+                    },
+                    { 
+                        id: 2,
+                        id_marca: 2,
+                        id_modelo: 4,
+                        id_tipoVehiculo: 1,
+                        id_tipo_combustible: 1,
+                        anio: 2022,
+                        no_chasis: '2HGFC2F52MH123456',
+                        no_motor: 'R18Z4-7654321',
+                        no_placa: 'DEF-456',
+                        estado: 'disponible',
+                        precio_dia: 3800
+                    },
+                    { 
+                        id: 3,
+                        id_marca: 3,
+                        id_modelo: 7,
+                        id_tipoVehiculo: 5,
+                        id_tipo_combustible: 1,
+                        anio: 2023,
+                        no_chasis: 'FORDM12345678901',
+                        no_motor: 'GT500-1234567',
+                        no_placa: 'GHI-789',
+                        estado: 'disponible',
+                        precio_dia: 8500
+                    }
+                ];
+                
+                // Datos de ejemplo para marcas
+                marcas = [
+                    { id: 1, nombre: 'Toyota', estado: 'activo' },
+                    { id: 2, nombre: 'Honda', estado: 'activo' },
+                    { id: 3, nombre: 'Ford', estado: 'activo' },
+                    { id: 4, nombre: 'Chevrolet', estado: 'activo' },
+                    { id: 5, nombre: 'Nissan', estado: 'activo' }
+                ];
+                
+                // Datos de ejemplo para modelos
+                modelos = [
+                    { id: 1, id_marca: 1, nombre: 'Corolla', estado: 'activo' },
+                    { id: 2, id_marca: 1, nombre: 'RAV4', estado: 'activo' },
+                    { id: 3, id_marca: 1, nombre: 'Camry', estado: 'activo' },
+                    { id: 4, id_marca: 2, nombre: 'Civic', estado: 'activo' },
+                    { id: 5, id_marca: 2, nombre: 'CR-V', estado: 'activo' },
+                    { id: 6, id_marca: 2, nombre: 'Accord', estado: 'activo' },
+                    { id: 7, id_marca: 3, nombre: 'Mustang', estado: 'activo' },
+                    { id: 8, id_marca: 3, nombre: 'Explorer', estado: 'activo' },
+                    { id: 9, id_marca: 4, nombre: 'Cruze', estado: 'activo' },
+                    { id: 10, id_marca: 5, nombre: 'Sentra', estado: 'activo' }
+                ];
+                
+                // Datos de ejemplo para tipos de vehículo
+                tiposVehiculo = [
+                    { id: 1, nombre: 'Sedán', estado: 'activo' },
+                    { id: 2, nombre: 'SUV', estado: 'activo' },
+                    { id: 3, nombre: 'Pickup', estado: 'activo' },
+                    { id: 4, nombre: 'Hatchback', estado: 'activo' },
+                    { id: 5, nombre: 'Deportivo', estado: 'activo' }
+                ];
+                
+                // Datos de ejemplo para tipos de combustible
+                tiposCombustible = [
+                    { id: 1, nombre: 'Gasolina', estado: 'activo' },
+                    { id: 2, nombre: 'Diesel', estado: 'activo' },
+                    { id: 3, nombre: 'Híbrido', estado: 'activo' },
+                    { id: 4, nombre: 'Eléctrico', estado: 'activo' }
+                ];
+                
+                // Actualizar filtros y selects
+                updateMarcasFilter();
+                updateModelosFilter();
+                updateTiposFilter();
+                updateCombustibleSelects();
+                
+                // Actualizar tabla
+                updateTable();
+            };
+
+            // Cargar marcas
+            const loadMarcas = async () => {
+                try {
+                    if (!serverAccessible) {
+                        console.log('Servidor no accesible, omitiendo carga de marcas');
+                        return null;
+                    }
+                    
+                    marcas = await window.api.marcas.getAll();
+                    console.log('Marcas cargadas:', marcas);
+                    
+                    // Inspeccionar estructura de la primera marca para debugging
+                    if (marcas && marcas.length > 0) {
+                        console.log('Estructura de la primera marca:');
+                        const firstMarca = marcas[0];
+                        Object.keys(firstMarca).forEach(key => {
+                            console.log(`${key}: ${firstMarca[key]} (${typeof firstMarca[key]})`);
+                        });
+                    }
+                    
+                    updateMarcasFilter();
+                    return marcas;
+                } catch (error) {
+                    console.error('Error al cargar marcas:', error);
+                    // Usar datos de ejemplo en caso de error (ya definidos en useExampleData)
+                    return null;
+                }
+            };
+
+            // Cargar modelos
+            const loadModelos = async () => {
+                try {
+                    if (!serverAccessible) {
+                        console.log('Servidor no accesible, omitiendo carga de modelos');
+                        return null;
+                    }
+                    
+                    modelos = await window.api.modelos.getAll();
+                    console.log('Modelos cargados:', modelos);
+                    
+                    // Inspeccionar estructura del primer modelo para debugging
+                    if (modelos && modelos.length > 0) {
+                        console.log('Estructura del primer modelo:');
+                        const firstModelo = modelos[0];
+                        Object.keys(firstModelo).forEach(key => {
+                            console.log(`${key}: ${firstModelo[key]} (${typeof firstModelo[key]})`);
+                        });
+                    }
+                    
+                    updateModelosFilter();
+                    return modelos;
+                } catch (error) {
+                    console.error('Error al cargar modelos:', error);
+                    return null;
+                }
+            };
+
+            // Cargar tipos de vehículo
+            const loadTiposVehiculo = async () => {
+                try {
+                    if (!serverAccessible) {
+                        console.log('Servidor no accesible, omitiendo carga de tipos de vehículo');
+                        return null;
+                    }
+                    
+                    const response = await window.api.tiposVehiculos.getAll();
+                    console.log('Tipos de vehículo cargados (raw):', response);
+                    
+                    // Mapear los datos del API al formato esperado por la UI
+                    tiposVehiculo = response.map(tipo => ({
+                        id: tipo.id_tipo_vehiculo || tipo.id,
+                        nombre: tipo.nombre || tipo.descripcion,
+                        estado: tipo.estado || 'activo'
+                    }));
+                    
+                    console.log('Tipos de vehículo mapeados:', tiposVehiculo);
+                    
+                    // Inspeccionar estructura del primer tipo para debugging
+                    if (tiposVehiculo && tiposVehiculo.length > 0) {
+                        console.log('Estructura del primer tipo de vehículo mapeado:');
+                        const firstTipo = tiposVehiculo[0];
+                        Object.keys(firstTipo).forEach(key => {
+                            console.log(`${key}: ${firstTipo[key]} (${typeof firstTipo[key]})`);
+                        });
+                    }
+                    
+                    updateTiposFilter();
+                    return tiposVehiculo;
+                } catch (error) {
+                    console.error('Error al cargar tipos de vehículo:', error);
+                    return null;
+                }
+            };
+
+            // Cargar tipos de combustible
+            const loadTiposCombustible = async () => {
+                try {
+                    if (!serverAccessible) {
+                        console.log('Servidor no accesible, omitiendo carga de tipos de combustible');
+                        return null;
+                    }
+                    
+                    const response = await window.api.tiposCombustible.getAll();
+                    console.log('Tipos de combustible cargados (raw):', response);
+                    
+                    // Mapear los datos del API al formato esperado por la UI
+                    tiposCombustible = response.map(tipo => ({
+                        id: tipo.id_tipo_combustible || tipo.id,
+                        nombre: tipo.nombre || tipo.descripcion,
+                        estado: tipo.estado || 'activo'
+                    }));
+                    
+                    console.log('Tipos de combustible mapeados:', tiposCombustible);
+                    
+                    // Inspeccionar estructura del primer tipo de combustible para debugging
+                    if (tiposCombustible && tiposCombustible.length > 0) {
+                        console.log('Estructura del primer tipo de combustible mapeado:');
+                        const firstCombustible = tiposCombustible[0];
+                        Object.keys(firstCombustible).forEach(key => {
+                            console.log(`${key}: ${firstCombustible[key]} (${typeof firstCombustible[key]})`);
+                        });
+                    }
+                    
+                    updateCombustibleSelects();
+                    return tiposCombustible;
+                } catch (error) {
+                    console.error('Error al cargar tipos de combustible:', error);
+                    return null;
+                }
+            };
+            
+            // Actualizar selects de combustible
+            const updateCombustibleSelects = () => {
+                // Actualizar selector en modal de añadir
+                const combustibleSelect = document.getElementById('combustibleSelect');
+                if (combustibleSelect) {
+                    combustibleSelect.innerHTML = '<option value="">Seleccionar combustible</option>';
+                    tiposCombustible.forEach(combustible => {
+                        const option = document.createElement('option');
+                        option.value = combustible.id;
+                        option.textContent = combustible.nombre;
+                        combustibleSelect.appendChild(option);
+                    });
+                }
+                
+                // Actualizar selector en modal de editar
+                const editCombustibleSelect = document.getElementById('editCombustibleSelect');
+                if (editCombustibleSelect) {
+                    editCombustibleSelect.innerHTML = '<option value="">Seleccionar combustible</option>';
+                    tiposCombustible.forEach(combustible => {
+                        const option = document.createElement('option');
+                        option.value = combustible.id;
+                        option.textContent = combustible.nombre;
+                        editCombustibleSelect.appendChild(option);
+                    });
+                }
+            };
+
+            // Actualizar filtro de marcas
+            const updateMarcasFilter = () => {
+                marcaFilter.innerHTML = '<option value="">Marca</option>';
+                marcas.forEach(marca => {
+                    const option = document.createElement('option');
+                    option.value = marca.id;
+                    option.textContent = marca.nombre;
+                    marcaFilter.appendChild(option);
+                });
+                
+                // También actualizar selector en modal
+                const marcaSelect = document.getElementById('marcaSelect');
+                if (marcaSelect) {
+                    marcaSelect.innerHTML = '<option value="">Seleccionar marca</option>';
+                    marcas.forEach(marca => {
+                        const option = document.createElement('option');
+                        option.value = marca.id;
+                        option.textContent = marca.nombre;
+                        marcaSelect.appendChild(option);
+                    });
+                }
+            };
+
+            // Actualizar filtro de modelos
+            const updateModelosFilter = () => {
+                modeloFilter.innerHTML = '<option value="">Modelo</option>';
+                modelos.forEach(modelo => {
+                    const option = document.createElement('option');
+                    option.value = modelo.id;
+                    option.textContent = modelo.nombre;
+                    modeloFilter.appendChild(option);
+                });
+                
+                // También actualizar selector en modal
+                const modeloSelect = document.getElementById('modeloSelect');
+                if (modeloSelect) {
+                    modeloSelect.innerHTML = '<option value="">Seleccionar modelo</option>';
+                    modelos.forEach(modelo => {
+                        const option = document.createElement('option');
+                        option.value = modelo.id;
+                        option.textContent = modelo.nombre;
+                        modeloSelect.appendChild(option);
+                    });
+                }
+            };
+
+            // Actualizar filtro de tipos
+            const updateTiposFilter = () => {
+                // Filtro principal de tipos
+                tipoFilter.innerHTML = '<option value="">Tipo</option>';
+                tiposVehiculo.forEach(tipo => {
+                    const option = document.createElement('option');
+                    option.value = tipo.id;
+                    option.textContent = tipo.nombre;
+                    tipoFilter.appendChild(option);
+                });
+                
+                // Actualizar selector en modal de añadir
+                const tipoSelect = document.getElementById('tipoSelect');
+                if (tipoSelect) {
+                    tipoSelect.innerHTML = '<option value="">Seleccionar tipo</option>';
+                    tiposVehiculo.forEach(tipo => {
+                        const option = document.createElement('option');
+                        option.value = tipo.id;
+                        option.textContent = tipo.nombre;
+                        tipoSelect.appendChild(option);
+                    });
+                }
+                
+                // Actualizar selector en modal de editar
+                const editTipoSelect = document.getElementById('editTipoSelect');
+                if (editTipoSelect) {
+                    editTipoSelect.innerHTML = '<option value="">Seleccionar tipo</option>';
+                    tiposVehiculo.forEach(tipo => {
+                        const option = document.createElement('option');
+                        option.value = tipo.id;
+                        option.textContent = tipo.nombre;
+                        editTipoSelect.appendChild(option);
+                    });
+                }
+            };
+
+            // Actualizar tabla de vehículos
+            const updateTable = () => {
+                // Debug logging
+                console.log('Actualizando tabla con:', {
+                    'Vehículos': vehiculos,
+                    'Tipos de Vehículo': tiposVehiculo,
+                    'Tipos de Combustible': tiposCombustible
+                });
+                
+                let filteredVehicles = vehiculos;
+                
+                // Aplicar filtros
+                const searchTerm = searchInput.value.toLowerCase();
+                const marca = marcaFilter.value;
+                const modelo = modeloFilter.value;
+                const tipo = tipoFilter.value;
+                const estado = estadoFilter.value;
+                
+                if (searchTerm) {
+                    filteredVehicles = filteredVehicles.filter(vehiculo => {
+                        // Buscar en modelo o placa (usar nombre pre-resuelto si está disponible)
+                        const modeloName = vehiculo.modelo_nombre || '';
+                        const placa = (vehiculo.no_placa || vehiculo.placa || '').toLowerCase();
+                        return modeloName.toLowerCase().includes(searchTerm) || placa.includes(searchTerm);
+                    });
+                }
+                
+                if (marca) {
+                    filteredVehicles = filteredVehicles.filter(vehiculo => {
+                        // Verificar si el campo existe antes de comparar
+                        const vehiculoMarcaId = vehiculo.id_marca !== undefined ? vehiculo.id_marca : 
+                                                (vehiculo.marca_id !== undefined ? vehiculo.marca_id : null);
+                        return vehiculoMarcaId == marca; // Usar == para comparación no estricta (string vs number)
+                    });
+                }
+                
+                if (modelo) {
+                    filteredVehicles = filteredVehicles.filter(vehiculo => {
+                        // Verificar si el campo existe antes de comparar
+                        const vehiculoModeloId = vehiculo.id_modelo !== undefined ? vehiculo.id_modelo : 
+                                                 (vehiculo.modelo_id !== undefined ? vehiculo.modelo_id : null);
+                        return vehiculoModeloId == modelo; // Usar == para comparación no estricta
+                    });
+                }
+                
+                if (tipo) {
+                    filteredVehicles = filteredVehicles.filter(vehiculo => {
+                        // Verificar si el campo existe antes de comparar
+                        const vehiculoTipoId = vehiculo.id_tipoVehiculo !== undefined ? vehiculo.id_tipoVehiculo : 
+                                              (vehiculo.tipo_id !== undefined ? vehiculo.tipo_id : 
+                                              (vehiculo.id_tipo !== undefined ? vehiculo.id_tipo : null));
+                        return vehiculoTipoId == tipo; // Usar == para comparación no estricta
+                    });
+                }
+                
+                if (estado) {
+                    filteredVehicles = filteredVehicles.filter(vehiculo => 
+                        vehiculo.estado === estado
+                    );
+                }
+                
+                // Calcular paginación
+                totalPages = Math.ceil(filteredVehicles.length / itemsPerPage);
+                const start = (currentPage - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
+                const paginatedVehicles = filteredVehicles.slice(start, end);
+                
+                // Actualizar tabla
+                vehicleTable.innerHTML = paginatedVehicles.map(vehiculo => {
+                    // Asegurarnos de que los IDs sean números para la comparación
+                    const vehiculoTipoId = parseInt(vehiculo.id_tipoVehiculo || vehiculo.id_tipo_vehiculo || 0);
+                    const vehiculoCombustibleId = parseInt(vehiculo.id_tipo_combustible || 0);
+                    
+                    console.log(`Procesando vehículo ID ${vehiculo.id}:`, {
+                        'ID Tipo': vehiculoTipoId,
+                        'ID Combustible': vehiculoCombustibleId
+                    });
+                    
+                    // Get vehicle type name
+                    let tipoNombre = 'Desconocido';
+                    if (vehiculoTipoId) {
+                        const tipo = tiposVehiculo.find(t => 
+                            parseInt(t.id) === vehiculoTipoId || 
+                            parseInt(t.id_tipo_vehiculo || 0) === vehiculoTipoId
+                        );
+                        console.log(`Búsqueda de tipo para ID ${vehiculoTipoId}:`, tipo);
+                        if (tipo) {
+                            tipoNombre = tipo.nombre || tipo.descripcion;
+                        }
+                    }
+                    
+                    // Get fuel type name
+                    let combustibleNombre = 'Desconocido';
+                    if (vehiculoCombustibleId) {
+                        const combustible = tiposCombustible.find(c => 
+                            parseInt(c.id) === vehiculoCombustibleId || 
+                            parseInt(c.id_tipo_combustible || 0) === vehiculoCombustibleId
+                        );
+                        console.log(`Búsqueda de combustible para ID ${vehiculoCombustibleId}:`, combustible);
+                        if (combustible) {
+                            combustibleNombre = combustible.nombre || combustible.descripcion;
+                        }
+                    }
+                    
+                    // Get brand name
+                    let marcaNombre = vehiculo.marca_nombre || 'Desconocida';
+                    if (!marcaNombre && vehiculo.id_marca) {
+                        const marca = marcas.find(m => m.id === vehiculo.id_marca || m.id_marca === vehiculo.id_marca);
+                        if (marca) {
+                            marcaNombre = marca.nombre || marca.descripcion;
+                        }
+                    }
+                    
+                    // Get model name
+                    let modeloNombre = vehiculo.modelo_nombre || 'Desconocido';
+                    if (!modeloNombre && vehiculo.id_modelo) {
+                        const modelo = modelos.find(m => m.id === vehiculo.id_modelo || m.id_modelo === vehiculo.id_modelo);
+                        if (modelo) {
+                            modeloNombre = modelo.nombre || modelo.descripcion;
+                        }
+                    }
+                    
+                    return `
+                        <tr>
+                            <td>${vehiculo.id}</td>
+                            <td>${marcaNombre}</td>
+                            <td>${modeloNombre}</td>
+                            <td>${vehiculo.anio || vehiculo.year || ''}</td>
+                            <td>${tipoNombre}</td>
+                            <td>${combustibleNombre}</td>
+                            <td>${vehiculo.no_chasis || vehiculo.chasis || ''}</td>
+                            <td>${vehiculo.no_motor || vehiculo.motor || ''}</td>
+                            <td>${vehiculo.no_placa || vehiculo.placa || ''}</td>
+                            <td><span class="badge bg-${vehiculo.estado === 'disponible' ? 'success' : vehiculo.estado === 'rentado' ? 'warning' : 'danger'}">${vehiculo.estado}</span></td>
+                            <td class="text-end">
+                                <button class="btn btn-edit btn-action btn-sm" onclick="editVehicle(${vehiculo.id})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-delete btn-action btn-sm" onclick="deleteVehicle(${vehiculo.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+                
+                // Actualizar información de resultados
+                resultsInfo.textContent = `Mostrando ${start + 1}-${Math.min(end, filteredVehicles.length)} de ${filteredVehicles.length} resultados`;
+                
+                // Actualizar paginación
+                updatePagination();
+            };
+
+            // Actualizar paginación
+            const updatePagination = () => {
+                paginationContainer.innerHTML = `
+                    <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                        <a class="page-link" href="#" onclick="event.preventDefault(); changePage(${currentPage - 1})">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    ${Array.from({length: totalPages}, (_, i) => i + 1).map(page => `
+                        <li class="page-item ${page === currentPage ? 'active' : ''}">
+                            <a class="page-link" href="#" onclick="event.preventDefault(); changePage(${page})">${page}</a>
+                        </li>
+                    `).join('')}
+                    <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                        <a class="page-link" href="#" onclick="event.preventDefault(); changePage(${currentPage + 1})">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                `;
+            };
+
+            // Cambiar página
+            window.changePage = (page) => {
+                if (page >= 1 && page <= totalPages) {
+                    currentPage = page;
+                    updateTable();
+                }
+            };
+
+            // CRUD Operations
+            window.editVehicle = async (id) => {
+                try {
+                    const vehiculo = vehiculos.find(v => v.id === id);
+                    if (!vehiculo) {
+                        throw new Error(`No se encontró el vehículo con ID ${id}`);
+                    }
+                    
+                    // Llenar formulario de edición
+                    document.getElementById('editVehiculoId').value = vehiculo.id;
+                    document.getElementById('editMarcaSelect').value = vehiculo.id_marca;
+                    // Actualizar opciones de modelos según la marca seleccionada
+                    updateEditModeloOptionsBasedOnMarca(vehiculo.id_marca);
+                    // Asignar modelo después de actualizar las opciones
+                    setTimeout(() => {
+                        document.getElementById('editModeloSelect').value = vehiculo.id_modelo;
+                    }, 100);
+                    document.getElementById('editAnioInput').value = vehiculo.anio;
+                    document.getElementById('editTipoSelect').value = vehiculo.id_tipoVehiculo;
+                    document.getElementById('editCombustibleSelect').value = vehiculo.id_tipo_combustible;
+                    document.getElementById('editChasisInput').value = vehiculo.no_chasis || '';
+                    document.getElementById('editMotorInput').value = vehiculo.no_motor || '';
+                    document.getElementById('editPlacaInput').value = vehiculo.no_placa || '';
+                    document.getElementById('editEstadoSelect').value = vehiculo.estado;
+                    document.getElementById('editPrecioInput').value = vehiculo.precio_dia;
+                    
+                    // Mostrar modal de edición
+                    const editModal = new bootstrap.Modal(document.getElementById('editVehicleModal'));
+                    editModal.show();
+                    
+                    // Manejar guardar cambios
+                    document.getElementById('saveEditVehicleBtn').onclick = async () => {
+                        try {
+                            // Obtener datos del formulario
+                            const vehiculoData = {
+                                id_marca: parseInt(document.getElementById('editMarcaSelect').value),
+                                id_modelo: parseInt(document.getElementById('editModeloSelect').value),
+                                anio: parseInt(document.getElementById('editAnioInput').value),
+                                id_tipoVehiculo: parseInt(document.getElementById('editTipoSelect').value),
+                                id_tipo_combustible: parseInt(document.getElementById('editCombustibleSelect').value),
+                                no_chasis: document.getElementById('editChasisInput').value,
+                                no_motor: document.getElementById('editMotorInput').value,
+                                no_placa: document.getElementById('editPlacaInput').value,
+                                estado: document.getElementById('editEstadoSelect').value,
+                                precio_dia: parseFloat(document.getElementById('editPrecioInput').value)
+                            };
+                            
+                            // Actualizar vehículo usando la API
+                            await window.api.vehiculos.update(id, vehiculoData);
+                            
+                            // Actualizar datos locales
+                            loadVehicles(currentPage);
+                            
+                            // Cerrar modal
+                            editModal.hide();
+                            
+                            // Mostrar mensaje de éxito
+                            showSuccessMessage('Vehículo actualizado correctamente');
+                        } catch (error) {
+                            console.error('Error al actualizar vehículo:', error);
+                            handleError(error, 'actualización de vehículo');
+                        }
+                    };
+                } catch (error) {
+                    console.error('Error al editar vehículo:', error);
+                    handleError(error, 'edición de vehículo');
+                }
+            };
+
+            window.deleteVehicle = async (id) => {
+                try {
+                    if (confirm(`¿Está seguro que desea eliminar el vehículo #${id}?`)) {
+                        // Eliminar vehículo usando la API
+                        await window.api.vehiculos.delete(id);
+                        
+                        // Actualizar datos locales
+                        loadVehicles(currentPage);
+                        
+                        // Mostrar mensaje de éxito
+                        showSuccessMessage('Vehículo eliminado correctamente');
+                    }
+                } catch (error) {
+                    console.error('Error al eliminar vehículo:', error);
+                    handleError(error, 'eliminación de vehículo');
+                }
+            };
+            
+            // Función para mostrar mensaje de éxito
+            const showSuccessMessage = (message) => {
+                const toastContainer = document.createElement('div');
+                toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+                toastContainer.innerHTML = `
+                    <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                ${message}
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(toastContainer);
+                const toast = new bootstrap.Toast(toastContainer.querySelector('.toast'), { delay: 3000 });
+                toast.show();
+                
+                // Eliminar el toast del DOM después de ocultarse
+                toastContainer.querySelector('.toast').addEventListener('hidden.bs.toast', () => {
+                    toastContainer.remove();
+                });
+            };
+            
+            // Función para actualizar opciones de modelos según la marca seleccionada (para edición)
+            const updateEditModeloOptionsBasedOnMarca = (marcaId) => {
+                const modeloSelect = document.getElementById('editModeloSelect');
+                modeloSelect.innerHTML = '<option value="">Seleccionar modelo</option>';
+                
+                if (marcaId) {
+                    const modelosFiltrados = modelos.filter(modelo => modelo.id_marca === parseInt(marcaId));
+                    modelosFiltrados.forEach(modelo => {
+                        const option = document.createElement('option');
+                        option.value = modelo.id;
+                        option.textContent = modelo.nombre;
+                        modeloSelect.appendChild(option);
+                    });
+                }
+            };
+            
+            // Asociar evento al cambio de marca para actualizar modelos (edición)
+            document.getElementById('editMarcaSelect').addEventListener('change', function() {
+                updateEditModeloOptionsBasedOnMarca(this.value);
+            });
+            
+            // Configurar el botón para agregar nuevo vehículo
+            document.getElementById('addVehicleBtn').addEventListener('click', () => {
+                document.getElementById('addVehicleForm').reset();
+            });
+            
+            // Manejar guardar nuevo vehículo
+            document.getElementById('saveAddVehicleBtn').addEventListener('click', async () => {
+                try {
+                    // Obtener datos del formulario
+                    const vehiculoData = {
+                        id_marca: parseInt(document.getElementById('marcaSelect').value),
+                        id_modelo: parseInt(document.getElementById('modeloSelect').value),
+                        anio: parseInt(document.getElementById('anioInput').value),
+                        id_tipoVehiculo: parseInt(document.getElementById('tipoSelect').value),
+                        id_tipo_combustible: parseInt(document.getElementById('combustibleSelect').value),
+                        no_chasis: document.getElementById('chasisInput').value,
+                        no_motor: document.getElementById('motorInput').value,
+                        no_placa: document.getElementById('placaInput').value,
+                        estado: document.getElementById('estadoSelect').value,
+                        precio_dia: parseFloat(document.getElementById('precioInput').value)
+                    };
+                    
+                    // Crear vehículo usando la API
+                    await window.api.vehiculos.create(vehiculoData);
+                    
+                    // Actualizar datos locales
+                    loadVehicles(currentPage);
+                    
+                    // Cerrar modal
+                    const addModal = bootstrap.Modal.getInstance(document.getElementById('addVehicleModal'));
+                    addModal.hide();
+                    
+                    // Mostrar mensaje de éxito
+                    showSuccessMessage('Vehículo agregado correctamente');
+                } catch (error) {
+                    console.error('Error al agregar vehículo:', error);
+                    handleError(error, 'creación de vehículo');
+                }
+            });
+
+            // Event Listeners
+            searchButton.addEventListener('click', () => {
+                currentPage = 1;
+                updateTable();
+            });
+
+            searchInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    currentPage = 1;
+                    updateTable();
+                }
+            });
+
+            if (marcaFilter) {
+                marcaFilter.addEventListener('change', () => {
+                    currentPage = 1;
+                    updateTable();
+                });
+            }
+
+            if (modeloFilter) {
+                modeloFilter.addEventListener('change', () => {
+                    currentPage = 1;
+                    updateTable();
+                });
+            }
+
+            if (tipoFilter) {
+                tipoFilter.addEventListener('change', () => {
+                    currentPage = 1;
+                    updateTable();
+                });
+            }
+
+            if (estadoFilter) {
+                estadoFilter.addEventListener('change', () => {
+                    currentPage = 1;
+                    updateTable();
+                });
+            }
+
+            // Cargar datos iniciales
+            loadVehicles(currentPage);
+        });
+    </script>
+</body>
+</html>

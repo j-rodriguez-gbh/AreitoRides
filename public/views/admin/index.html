@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Areito Rides</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <style>
+        .navbar-admin {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+            color: white;
+        }
+        .stat-card.vehicles {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        .stat-card.reservations {
+            background: linear-gradient(135deg, #f953c6 0%, #b91d73 100%);
+        }
+        .stat-card.employees {
+            background: linear-gradient(135deg, #f12711 0%, #f5af19 100%);
+        }
+        .chart-card {
+            padding: 1.5rem;
+        }
+        .nav-link {
+            color: rgba(255,255,255,0.8) !important;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: white !important;
+            background: rgba(255,255,255,0.1);
+        }
+        .btn-logout {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border-color: rgba(255,255,255,0.3);
+        }
+        .page-title {
+            color: #1e3c72;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #2a5298;
+        }
+        .stat-icon {
+            font-size: 2.5rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-admin">
+        <div class="container">
+            <a class="navbar-brand" href="/admin">
+                <img src="/assets/img/Logo.png" alt="Areito Rides" height="40">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/admin">
+                            <i class="fas fa-chart-line me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/vehiculos">
+                            <i class="fas fa-car me-2"></i>Vehículos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/marcas">
+                            <i class="fas fa-trademark me-2"></i>Marcas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/modelos">
+                            <i class="fas fa-car-side me-2"></i>Modelos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/tipos-vehiculos">
+                            <i class="fas fa-tags me-2"></i>Tipos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/combustible">
+                            <i class="fas fa-gas-pump me-2"></i>Combustible
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/empleados">
+                            <i class="fas fa-users me-2"></i>Empleados
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/clientes">
+                            <i class="fas fa-user-friends me-2"></i>Clientes
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <a href="/" class="btn btn-outline-light me-2">
+                        <i class="fas fa-home me-2"></i>Ir al Inicio
+                    </a>
+                    <div class="dropdown">
+                        <button class="btn btn-logout dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-2"></i><span id="currentUsername">Usuario</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/perfil">
+                                <i class="fas fa-user-circle me-2"></i>Mi Perfil
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logoutButton">
+                                <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="container mt-5">
+        <h1 class="page-title">Panel de Administración</h1>
+        
+        <!-- Tarjetas de Resumen -->
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card stat-card vehicles h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-car stat-icon"></i>
+                        <p class="stat-value mb-2" id="totalVehiculos">0</p>
+                        <p class="stat-label mb-0">Total Vehículos</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card reservations h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-calendar-check stat-icon"></i>
+                        <p class="stat-value mb-2" id="reservasActivas">0</p>
+                        <p class="stat-label mb-0">Reservas Activas</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users stat-icon"></i>
+                        <p class="stat-value mb-2" id="totalEmpleados">0</p>
+                        <p class="stat-label mb-0">Empleados</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stat-card employees h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-car-side stat-icon"></i>
+                        <p class="stat-value mb-2" id="vehiculosDisponibles">0</p>
+                        <p class="stat-label mb-0">Vehículos Disponibles</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos -->
+        <div class="row mt-5 g-4">
+            <div class="col-md-6">
+                <div class="card chart-card h-100">
+                    <div class="card-header bg-transparent border-0">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Reservas por Mes
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="reservasChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card chart-card h-100">
+                    <div class="card-header bg-transparent border-0">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-chart-pie me-2"></i>
+                            Vehículos por Tipo
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="vehiculosChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/views/front/js/api.js" type="module"></script>
+    <script src="/assets/js/auth.js" type="module"></script>
+    <script>
+        // Esperar a que el DOM esté cargado
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Verificar autenticación
+            if (!window.api) {
+                window.location.href = '/login';
+                return;
+            }
+
+            try {
+                // Obtener datos del usuario actual
+                const currentUser = window.api.auth.getCurrentUser();
+                if (currentUser) {
+                    document.getElementById('currentUsername').textContent = currentUser.nombre || currentUser.username || 'Usuario';
+                }
+            } catch (error) {
+                console.error('Error al obtener datos del usuario:', error);
+            }
+
+            // Cerrar sesión
+            document.getElementById('logoutButton').addEventListener('click', async () => {
+                try {
+                    await window.api.auth.logout();
+                    window.location.href = '/login';
+                } catch (error) {
+                    console.error('Error al cerrar sesión:', error);
+                }
+            });
+
+            // Cargar datos del dashboard
+            loadDashboardData();
+        });
+
+        // Cargar datos del dashboard
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('/api/dashboard/estadisticas', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al obtener datos del dashboard');
+                }
+
+                const data = await response.json();
+
+                // Actualizar contadores
+                document.getElementById('totalVehiculos').textContent = data.totalVehiculos;
+                document.getElementById('reservasActivas').textContent = data.reservasActivas || 0;
+                document.getElementById('totalEmpleados').textContent = data.totalEmpleados;
+                document.getElementById('vehiculosDisponibles').textContent = data.vehiculosDisponibles;
+
+                // Gráfico de reservas
+                const reservasCtx = document.getElementById('reservasChart').getContext('2d');
+                new Chart(reservasCtx, {
+                    type: 'line',
+                    data: {
+                        labels: data.reservasPorMes.map(item => {
+                            const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+                            return meses[item.mes - 1];
+                        }),
+                        datasets: [{
+                            label: 'Reservas',
+                            data: data.reservasPorMes.map(item => item.total),
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Gráfico de vehículos
+                const vehiculosCtx = document.getElementById('vehiculosChart').getContext('2d');
+                new Chart(vehiculosCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: data.vehiculosPorTipo.map(item => item.tipo),
+                        datasets: [{
+                            data: data.vehiculosPorTipo.map(item => item.total),
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 86)',
+                                'rgb(75, 192, 192)',
+                                'rgb(153, 102, 255)',
+                                'rgb(255, 159, 64)'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'right'
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error al cargar datos del dashboard:', error);
+                alert('Error al cargar los datos del dashboard');
+            }
+        }
+    </script>
+</body>
+</html>

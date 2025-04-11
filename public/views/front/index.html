@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Areito Rides - Alquiler de Vehículos</title>
+    
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#00aba9">
+    <meta name="theme-color" content="#ffffff">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/assets/img/Logo.png" alt="Areito Rides">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/catalogo">Catálogo</a>
+                    </li>
+                </ul>
+                <div class="d-flex" id="authButtons">
+                    <!-- Login/Register buttons (shown when logged out) -->
+                    <div id="loginButtonContainer">
+                        <a href="/login" class="btn btn-outline-light me-2">Iniciar Sesión</a>
+                        <a href="/registro" class="btn btn-primary">Registrarse</a>
+                    </div>
+                    
+                    <!-- User dropdown menu (shown when logged in) -->
+                    <div id="logoutButtonContainer" style="display: none;">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user"></i> <span id="currentUsername">Usuario</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="/perfil">
+                                    <i class="fas fa-user-circle"></i> Mi Perfil
+                                </a></li>
+                                <li id="adminPanelLink" style="display: none;"><a class="dropdown-item" href="/admin">
+                                    <i class="fas fa-tools"></i> Panel de Administración
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" id="logoutButton">
+                                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-75">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Encuentra el Auto Perfecto</h1>
+                    <p class="lead mb-4">Reserva fácilmente y disfruta tu viaje con Areito Rides.</p>
+                    <a href="/catalogo" class="btn btn-primary btn-lg">Ver Catálogo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Vehicles -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Vehículos Destacados</h2>
+            <div class="row" id="featuredVehicles">
+                <!-- Los vehículos destacados se cargarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">¿Por qué elegirnos?</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-car fa-3x mb-3 text-primary"></i>
+                        <h3>Amplia Flota</h3>
+                        <p>Gran variedad de vehículos para satisfacer todas tus necesidades.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-dollar-sign fa-3x mb-3 text-primary"></i>
+                        <h3>Precios Competitivos</h3>
+                        <p>Las mejores tarifas del mercado con transparencia total.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-headset fa-3x mb-3 text-primary"></i>
+                        <h3>Soporte 24/7</h3>
+                        <p>Atención al cliente disponible en todo momento.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Areito Rides</h5>
+                    <p>Tu mejor opción para alquilar vehículos.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Enlaces Rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/catalogo" class="text-light">Catálogo</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-phone me-2"></i> +1234567890</li>
+                        <li><i class="fas fa-envelope me-2"></i> info@areitorides.com</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Santo Domingo, República Dominicana</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 Areito Rides. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/views/front/js/api.js" type="module"></script>
+    <script src="/assets/js/auth.js" type="module"></script>
+    <script src="/views/front/js/main.js" type="module"></script>
+
+    <!-- Contenedor de alertas -->
+    <div id="alertContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1050"></div>
+</body>
+</html> 
